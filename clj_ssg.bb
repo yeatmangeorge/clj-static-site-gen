@@ -45,6 +45,7 @@
 (save "src/routes.clj" (res "routes.clj"))
 (save "src/page.clj" (res "page.clj"))
 (save "src/not_found.clj" (res "not_found.clj"))
+(save ".github/workflows/deploy.yml" (res "github-deploy.yml"))
 
 (defn process-navbar [navbar]
   (s/replace navbar ";;PROJECT-NAME;;" project-name))
