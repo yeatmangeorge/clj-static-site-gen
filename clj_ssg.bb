@@ -1,10 +1,21 @@
 (ns clj-ssg
   (:require
    [clojure.string :as s]
-   [babashka.fs :as fs]
-   [babashka.cli :as cli]))
+   [babashka.fs :as fs]))
 
-(def project-name "demo")
+(defn exit! [message]
+  (binding [*out* *err*]
+    (println (str "Error: " message))
+    (println "Usage: clj-ssg <project-name>"))
+  (System/exit 1))
+
+(def project-name
+  (let [name (first *command-line-args*)]
+    (when (s/blank? name)
+      (exit! "Project name is required and cannot be blank"))
+    name))
+
+(println "Creating website...")
 
 ;; Paths relative to the source script
 (def source-dir
@@ -40,3 +51,5 @@
 
 (save "src/navbar.clj"
       (process-navbar (res "navbar.template.clj")))
+
+(printf "%s website created!\n" project-name)
