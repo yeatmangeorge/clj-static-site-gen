@@ -1,0 +1,14 @@
+{:deps {org.babashka/http-server {:mvn/version "0.1.14"}}
+ :paths ["src"]
+ :tasks
+ {:requires ([babashka.http-server :as http]
+             [babashka.nrepl.server :as nrepl])
+
+  build (shell "bb build.clj")
+
+  watch (shell "watchexec -e clj,css bb build")
+
+  dev (do (spit ".nrepl-port" "1667")
+          (nrepl/start-server! {:port 1667})
+          (future (http/serve {:dir "public" :port 8000}))
+          (run 'watch))}}
